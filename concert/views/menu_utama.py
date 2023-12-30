@@ -1,41 +1,194 @@
-import customtkinter
+import tkinter as tk
+from tkinter import font as tkfont
+import ttkbootstrap as ttk
+from ttkbootstrap.constants import *
 
-class MyTabView(customtkinter.CTkTabview):
-    def __init__(self, master, **kwargs):
-        super().__init__(master, **kwargs)
 
-        # create tabs
-        self.add("tab 1")
-        self.add("tab 2")
+class SampleApp(tk.Tk):
 
-        # add widgets on tabs
-        self.label = customtkinter.CTkLabel(master=self.tab("tab 1"))
-        self.label.grid(row=0, column=0, padx=20, pady=10)
+    def __init__(self, *args, **kwargs):
+        tk.Tk.__init__(self, *args, **kwargs)
+        self.title_font = tkfont.Font(family='Arial', size=18, weight="bold")
 
-class App(customtkinter.CTk):
-    def __init__(self):
-        super().__init__()
-        self.geometry("600x500")
-        self.title("CTk example")
+        # the container is where we'll stack a bunch of frames
+        # on top of each other, then the one we want visible
+        # will be raised above the others
+        container = tk.Frame(self)
+        container.pack(side="top", fill="both", expand=True)
+        container.grid_rowconfigure(0, weight=1)
+        container.grid_columnconfigure(0, weight=1)
 
-        # add widgets to app
-        self.button = customtkinter.CTkButton(self, command=self.button_click)
-        self.button.grid(row=0, column=0, padx=20, pady=10)
-        self.segemented_button_var = customtkinter.StringVar(value="Value 1")
-        self.segemented_button = customtkinter.CTkSegmentedButton(self, values=["Value 1", "Value 2", "Value 3"],
-                                                            command=self.segmented_button_callback,
-                                                            variable=self.segemented_button_var)
-        self.segemented_button.grid(row=1, column=0, padx=20, pady=10)
+        self.frames = {}
+        for F in (StartPage, LoginPage, RegisterPage, AppPage, ConcertPage, TopupPage, PurchasePage, DetailPurchasePage, RefundPage, BuyTicketsPage, DetailConcertPage):
+            page_name = F.__name__
+            frame = F(parent=container, controller=self)
+            self.frames[page_name] = frame
+
+            # put all of the pages in the same location;
+            # the one on the top of the stacking order
+            # will be the one that is visible.
+            frame.grid(row=0, column=0, sticky="nsew")
+
+        self.show_frame("StartPage")
+
+    def show_frame(self, page_name):
+        frame = self.frames[page_name]
+        frame.tkraise()
+
+
+class StartPage(tk.Frame):
+
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
+        self.controller = controller
+        label = tk.Label(self, text="Selamat Datang di Aplikasi Pemesanan Tiket Konser", font=controller.title_font)
+        label.pack(side="top", fill="x", pady=10)
+
+        button1 = tk.Button(self, text="Masuk aplikasi",
+                            command=lambda: controller.show_frame("LoginPage"))
+        button2 = tk.Button(self, text="Buat akun baru",
+                            command=lambda: controller.show_frame("RegisterPage"))
+        button1.pack()
+        button2.pack()
+
+
+class LoginPage(tk.Frame):
+
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
+        self.controller = controller
+        label = tk.Label(self, text="Silahkan Masuk Aplikasi", font=controller.title_font)
+        label.pack(side="top", fill="x", pady=10)
+        button1 = tk.Button(self, text="Masuk",
+                           command=lambda: controller.show_frame("AppPage"))
+        button2 = tk.Button(self, text="Kembali",
+                           command=lambda: controller.show_frame("StartPage"))
+        button1.pack()
+        button2.pack()
+
+
+class RegisterPage(tk.Frame):
+
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
+        self.controller = controller
+        label = tk.Label(self, text="Silahkan Daftar Akun Baru", font=controller.title_font)
+        label.pack(side="top", fill="x", pady=10)
+        button1 = tk.Button(self, text="Daftar",
+                           command=lambda: controller.show_frame("LoginPage"))
+        button2 = tk.Button(self, text="Kembali",
+                           command=lambda: controller.show_frame("StartPage"))
+        button1.pack()
+        button2.pack()
         
-        self.tab_view = MyTabView(master=self)
-        self.tab_view.grid(row=0, column=0, padx=20, pady=20)
+class AppPage(tk.Frame):
 
-    # add methods to app
-    def button_click(self):
-        print("button click")
-    
-    def segmented_button_callback(self, value):
-        print("segmented button clicked:", value)
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
+        self.controller = controller
+        label = tk.Label(self, text="Silahkan Daftar Akun Baru", font=controller.title_font)
+        label.pack(side="top", fill="x", pady=10)
+        button1 = tk.Button(self, text="Lihat Tiket Konser",
+                           command=lambda: controller.show_frame("ConcertPage"))
+        button2 = tk.Button(self, text="Topup Saldo",
+                           command=lambda: controller.show_frame("TopupPage"))
+        button3 = tk.Button(self, text="Lihat Pembelian",
+                           command=lambda: controller.show_frame("PurchasePage"))
+        button4 = tk.Button(self, text="Keluar",
+                           command=lambda: controller.show_frame("StartPage"))
+        button1.pack()
+        button2.pack()
+        button3.pack()
+        button4.pack()
+        
+class ConcertPage(tk.Frame):
+
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
+        self.controller = controller
+        label = tk.Label(self, text="Data Konser", font=controller.title_font)
+        label.pack(side="top", fill="x", pady=10)
+        button1 = tk.Button(self, text="Beli Tiker",
+                           command=lambda: controller.show_frame("BuyTicketsPage"))
+        button2 = tk.Button(self, text="Detail Konser",
+                           command=lambda: controller.show_frame("DetailConcertPage"))
+        button3 = tk.Button(self, text="Kembali",
+                           command=lambda: controller.show_frame("AppPage"))
+        button1.pack()
+        button2.pack()
+        button3.pack()
+        
+class BuyTicketsPage(tk.Frame):
+
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
+        self.controller = controller
+        label = tk.Label(self, text="Beli Tiket", font=controller.title_font)
+        label.pack(side="top", fill="x", pady=10)
+        button1 = tk.Button(self, text="Kembali",
+                           command=lambda: controller.show_frame("ConcertPage"))
+        button1.pack()
+        
+class DetailConcertPage(tk.Frame):
+
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
+        self.controller = controller
+        label = tk.Label(self, text="Detail Konser", font=controller.title_font)
+        label.pack(side="top", fill="x", pady=10)
+        button1 = tk.Button(self, text="Kembali",
+                           command=lambda: controller.show_frame("ConcertPage"))
+        button1.pack()
+        
+class TopupPage(tk.Frame):
+
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
+        self.controller = controller
+        label = tk.Label(self, text="Top Up", font=controller.title_font)
+        label.pack(side="top", fill="x", pady=10)
+        button1 = tk.Button(self, text="Kembali",
+                           command=lambda: controller.show_frame("AppPage"))
+        button1.pack()
+        
+class PurchasePage(tk.Frame):
+
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
+        self.controller = controller
+        label = tk.Label(self, text="Top Up", font=controller.title_font)
+        label.pack(side="top", fill="x", pady=10)
+        button1 = tk.Button(self, text="Detail Purchase",
+                           command=lambda: controller.show_frame("DetailPurchasePage"))
+        button2 = tk.Button(self, text="Refund",
+                           command=lambda: controller.show_frame("RefundPage"))
+        button3 = tk.Button(self, text="Kembali",
+                           command=lambda: controller.show_frame("AppPage"))
+        button1.pack()
+        button2.pack()
+        button3.pack()
+        
+class DetailPurchasePage(tk.Frame):
+
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
+        self.controller = controller
+        label = tk.Label(self, text="Detail Transaksi", font=controller.title_font)
+        label.pack(side="top", fill="x", pady=10)
+        button1 = tk.Button(self, text="Kembali",
+                           command=lambda: controller.show_frame("PurchasePage"))
+        button1.pack()
+        
+class RefundPage(tk.Frame):
+
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
+        self.controller = controller
+        label = tk.Label(self, text="Refund", font=controller.title_font)
+        label.pack(side="top", fill="x", pady=10)
+        button1 = tk.Button(self, text="Kembali",
+                           command=lambda: controller.show_frame("PurchasePage"))
+        button1.pack()
 
 
-app = App()
+app = SampleApp()
