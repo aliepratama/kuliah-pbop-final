@@ -21,26 +21,31 @@ class ConcertApp(tk.Tk):
         tk.Tk.__init__(self, *args, **kwargs)
         self.title_font = tkfont.Font(family='Arial', size=18, weight="bold")
 
-        container = tk.Frame(self)
-        container.pack(side="top", fill="both", expand=True)
-        container.grid_rowconfigure(0, weight=1)
-        container.grid_columnconfigure(0, weight=1)
+        self.__container = tk.Frame(self)
+        self.__container.pack(side="top", fill="both", expand=True)
+        self.__container.grid_rowconfigure(0, weight=1)
+        self.__container.grid_columnconfigure(0, weight=1)
 
         self.frames = {}
         for F in (StartPage, LoginPage, RegisterPage, AppPage, ConcertPage, 
                   TopupPage, PurchasePage, DetailPurchasePage, RefundPage, 
                   BuyTicketsPage, DetailConcertPage):
             page_name = F.__name__
-            frame = F(parent=container, controller=self)
+            frame = F(parent=self.__container, controller=self)
             self.frames[page_name] = frame
 
             frame.grid(row=0, column=0, sticky="nsew")
 
         self.show_frame("StartPage")
 
-    def show_frame(self, page_name):
+    def show_frame(self, page_name, update=False):
         frame = self.frames[page_name]
+        if update:
+            frame.__init__(parent=self.__container, controller=self)
+            frame.grid(row=0, column=0, sticky="nsew")
         frame.tkraise()
-        
+        if update:
+            frame.update_view()
+            
         
 app = ConcertApp()

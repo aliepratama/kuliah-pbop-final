@@ -8,13 +8,9 @@ class TicketsController:
     def lihat_semua_tiket(self, id_konser):
         res = self.model.select(order="id asc", 
                                 condition="konser_id=%s"%(id_konser,))
-        tuple_into_dict = lambda x: {
-            'id': x[0], 
-            'Jenis Tiket': x[2], 
-            'Stok': x[3],
-            'Harga': x[4],
-        }
-        return list(map(tuple_into_dict, res))
+        col = ['id', 'Konser ID', 'Jenis Tiket', 'Stok', 'Harga']
+        print('CTRL SHOW TIKET>>>>', res)
+        return col, res
     
     def lihat_harga_tiket(self, id_tiket):
         res = self.model.select(fields='harga',

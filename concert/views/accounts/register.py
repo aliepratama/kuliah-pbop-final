@@ -63,3 +63,4 @@ class RegisterPage(tk.Frame):
         except:
             print('Gagal menambahkan akun!')
         self.controller.show_frame("LoginPage")
+        
