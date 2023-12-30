@@ -17,7 +17,6 @@ from concert.views.purchases.refund import RefundPage
 
 
 class ConcertApp(tk.Tk):
-
     def __init__(self, *args, **kwargs):
         tk.Tk.__init__(self, *args, **kwargs)
         self.title_font = tkfont.Font(family='Arial', size=18, weight="bold")
