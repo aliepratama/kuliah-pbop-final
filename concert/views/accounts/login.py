@@ -45,7 +45,7 @@ class LoginPage(tk.Frame):
         try:
             user_ctrl.login(res)
             print('Berhasil masuk!')
-            self.controller.show_frame("AppPage")
+            self.controller.show_frame("AppPage", True)
         except Exception as e:
             print(e)
         

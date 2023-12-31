@@ -55,5 +55,5 @@ class BuyTicketsPage(tk.Frame):
             print('Berhasil beli tiket!')
         except Exception as e:
             print('Gagal beli tiket!', e)
-        self.controller.show_frame("AppPage")
+        self.controller.show_frame("AppPage", True)
         

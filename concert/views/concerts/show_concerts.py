@@ -30,9 +30,9 @@ class ConcertPage(tk.Frame):
         button1 = tk.Button(self, text="Beli Tiket",
                            command=self._read)
         button2 = tk.Button(self, text="Detail Konser",
-                           command=lambda: controller.show_frame("DetailConcertPage"))
+                           command=self._detail)
         button3 = tk.Button(self, text="Kembali",
-                           command=lambda: controller.show_frame("AppPage"))
+                           command=lambda: controller.show_frame("AppPage", True))
         button1.pack()
         button2.pack()
         button3.pack()
@@ -40,5 +40,9 @@ class ConcertPage(tk.Frame):
     def _read(self):
         print(self.dt.get_rows(selected=True)[0].values)
         Session.USER_DATA['concert_id'] = self.dt.get_rows(selected=True)[0].values[0]
-        self.controller.show_frame('BuyTicketsPage', update=True
-                                   )
+        self.controller.show_frame('BuyTicketsPage', update=True)
+    
+    def _detail(self):
+        print(self.dt.get_rows(selected=True)[0].values)
+        Session.USER_DATA['concert_id'] = self.dt.get_rows(selected=True)[0].values[0]
+        self.controller.show_frame('DetailConcertPage', update=True)

@@ -11,14 +11,11 @@ class ConcertsController:
         return col, res
     
     def lihat_detail_konser(self, id):
-        res = self.model.select(condition=f"id={id}")
-        tuple_into_dict = lambda x: {
-            'Tanggal': x[1], 
-            'Judul Konser': x[2],
-            'Lokasi': x[3],
-            'Deskripsi': x[4]
-        }
-        return list(map(tuple_into_dict, res))
+        transform = lambda x : (x[1], x[2], x[3], x[4])
+        res = list(map(transform, self.model.select(condition=f"id={id}")))
+        col = ('Tanggal', 'Judul Konser', 'Lokasi', 'Deskripsi')
+        print('CTRL DETAIL KONSER>>>>', res)
+        return col, res
     
     def get_format_nama(self, id):
         res = self.model.select(fields="nama_konser", condition="id=%s"%(id,))

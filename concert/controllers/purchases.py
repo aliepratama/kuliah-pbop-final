@@ -26,17 +26,12 @@ class PurchasesController:
         
     def lihat_semua_pembelian(self):
         if self.model.count_rows()[0] > 0:
-            res = self.model.select(order="tanggal_transaksi desc",
-                                    condition="user_id=%s"%(Session.USER_ID,))
-            tuple_into_dict = lambda x: {
-                'id': x[0], 
-                'Judul': ticket_ctrl.get_format_nama(x[2]), 
-                'Kuantitas': x[3],
-                'Total': x[4],
-                'Tanggal': x[5],
-                'Status': 'Refund' if x[6] == 1 else 'Normal',
-            }
-            return list(map(tuple_into_dict, res))
+            transform = lambda x: (x[0], ticket_ctrl.get_format_nama(x[2]), x[3],
+                                   x[4], x[5], 'Refund' if x[6] == 1 else 'Normal')
+            res = list(map(transform, self.model.select(order="tanggal_transaksi desc",
+                                    condition="user_id=%s"%(Session.USER_ID,))))
+            col = ('id', 'Judul', 'Kuantitas', 'Total', 'Tanggal', 'Status')
+            return col, res
         return None
     
     def refund(self, id_purchase):
@@ -48,16 +43,11 @@ class PurchasesController:
         
     def lihat_detail_pembelian(self, id_purchase):
         all_info = []
-        res = self.model.select(condition="id=%s"%(id_purchase,))
-        tuple_into_dict = lambda x: {
-            'id': x[0], 
-            'ID Tiket': x[2], 
-            'Kuantitas': x[3],
-            'Total': x[4],
-            'Tanggal': x[5],
-            'Status': 'Refund' if x[6] == 1 else 'Normal',
-        }
-        all_info.append(list(map(tuple_into_dict, res)))
+        transform = lambda x: (x[0], x[2], x[3], x[4], x[5],
+                               'Refund' if x[6] == 1 else 'Normal')
+        res = list(map(transform, self.model.select(condition="id=%s"%(id_purchase,))))
+        col = ('id', 'ID Tiket', 'Kuantitas', 'Total', 'Tanggal', 'Status')
+        all_info.append((col, res))
         res = self.model.select(fields='tiket_id',
             condition="id=%s"%(id_purchase,))
         all_info.append(ticket_ctrl.lihat_detail_tiket(res[0][0]))

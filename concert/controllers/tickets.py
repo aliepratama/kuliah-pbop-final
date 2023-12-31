@@ -32,14 +32,16 @@ class TicketsController:
         self.model.update(req, 'id=%s'%(id_tiket,))
         
     def lihat_detail_tiket(self, id):
-        res = self.model.select(condition="id=%s"%(id,))
+        transform = lambda x: (x[0], x[2], x[3], x[4])
+        res = list(map(transform, self.model.select(condition="id=%s"%(id,))))
         tuple_into_dict = lambda x: {
             'id': x[0], 
             'Jenis Tiket': x[2], 
             'Stok': x[3],
             'Harga': x[4],
         }
-        return list(map(tuple_into_dict, res))
+        col = ('id', 'Jenis Tiket', 'Stok', 'Harga')
+        return col, res
     
     def get_id_konser(self, id):
         res = self.model.select(fields="konser_id", condition="id=%s"%(id,))

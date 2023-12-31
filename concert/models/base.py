@@ -27,7 +27,7 @@ class ModelBase:
     
     def update(self, table, data, condition):
         self.connect()
-        keys = ', '.join(['%s=%s' % (k, '%s') for k in data.keys()])
+        keys = ', '.join(['%s=%s' % (k, '?') for k in data.keys()])
         sql = 'update %s set %s where %s' % (table, keys, condition)
         try:
             self.cur.execute(sql, tuple(data.values()))
