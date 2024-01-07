@@ -1,24 +1,21 @@
-import tkinter as tk
-from tkinter import font as tkfont
-import ttkbootstrap as ttk
-from ttkbootstrap.constants import *
+import customtkinter
 
 
 from concert.controllers.purchases import purchases_ctrl
 from concert.helpers.session import Session
 
 
-class RefundPage(tk.Frame):
+class RefundPage(customtkinter.CTkFrame):
 
     def __init__(self, parent, controller):
-        tk.Frame.__init__(self, parent)
+        customtkinter.CTkFrame.__init__(self, parent, fg_color="transparent")
         self.controller = controller
-        label = tk.Label(self, text="Refund", font=controller.title_font)
+        label = customtkinter.CTkLabel(self, text="Refund", font=controller.title_font)
         label.pack(side="top", fill="x", pady=10)
-        button1 = tk.Button(self, text="Konfirmasi",
+        button1 = customtkinter.CTkButton(self, text="Konfirmasi",
                            command=self._refund)
         button1.pack()
-        button2 = tk.Button(self, text="Kembali",
+        button2 = customtkinter.CTkButton(self, text="Kembali",
                            command=lambda: controller.show_frame("PurchasePage", True))
         button2.pack()
         

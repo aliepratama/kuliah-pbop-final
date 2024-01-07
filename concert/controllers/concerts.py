@@ -11,11 +11,11 @@ class ConcertsController:
         return col, res
     
     def lihat_detail_konser(self, id):
-        transform = lambda x : (x[1], x[2], x[3], x[4])
+        transform = lambda x : [['Tanggal', x[1]], ['Judul Konser', x[2]],
+                                ['Lokasi', x[3]], ['Deskripsi', x[4]]]
         res = list(map(transform, self.model.select(condition=f"id={id}")))
-        col = ('Tanggal', 'Judul Konser', 'Lokasi', 'Deskripsi')
         print('CTRL DETAIL KONSER>>>>', res)
-        return col, res
+        return res[0]
     
     def get_format_nama(self, id):
         res = self.model.select(fields="nama_konser", condition="id=%s"%(id,))

@@ -30,6 +30,8 @@ class UsersController:
     def ubah_saldo(self, nominal, is_add = True):
         res = self.model.select(fields='saldo',
                                 condition='id=%s'%(Session.USER_ID,))
+        if nominal < 0:
+            raise Exception('Saldo tidak valid!')
         if is_add:
             saldo = res[0][0] + nominal
         else:
