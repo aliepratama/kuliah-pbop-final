@@ -23,8 +23,8 @@ class RefundPage(customtkinter.CTkFrame):
         frame1.pack(pady=12, anchor='center')
         
         button_image1 = customtkinter.CTkImage(
-            Image.open(os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), 'static/right-from-bracket-solid-svg.png')), 
-            size=(25, 20))
+            Image.open(os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), 'static/arrow-left-solid-svg (1).png')), 
+            size=(18, 20))
         button1 = customtkinter.CTkButton(frame1, text="Batalkan",
                             fg_color="#cbd5e1",
                             hover_color="#94a3b8",
@@ -34,7 +34,7 @@ class RefundPage(customtkinter.CTkFrame):
                             command=lambda: controller.show_frame("PurchasePage", True))
         
         button_image2 = customtkinter.CTkImage(
-            Image.open(os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), 'static/arrow-right-to-bracket-solid-svg.png')), 
+            Image.open(os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), 'static/circle-check-solid-svg.png')), 
             size=(20, 20))
         button2 = customtkinter.CTkButton(frame1, text="Konfirmasi",
                             fg_color="#015395",
