@@ -42,8 +42,8 @@ class ConcertPage(customtkinter.CTkFrame):
             searchable=True,
             bootstyle=ttkc.PRIMARY,
         )
-        self.dt.hide_selected_column(cid=0)
-        self.dt.hide_selected_column(cid=4)
+        for c_id in [0, 4]:
+            self.dt.hide_selected_column(cid=c_id)
         self.dt.pack(fill=ttkc.BOTH, expand=ttkc.YES, padx=10, pady=10)
         
         frame1 = customtkinter.CTkFrame(self.__container, fg_color="transparent")

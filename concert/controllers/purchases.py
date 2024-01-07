@@ -43,11 +43,10 @@ class PurchasesController:
         
     def lihat_detail_pembelian(self, id_purchase):
         all_info = []
-        transform = lambda x: (x[0], x[2], x[3], x[4], x[5],
-                               'Refund' if x[6] == 1 else 'Normal')
+        transform = lambda x: [['id', x[0]], ['ID Tiket', x[2]], ['Kuantitas', x[3]], ['Total', x[4]], ['Tanggal', x[5]],
+                               ['Status', 'Refund' if x[6] == 1 else 'Normal']]
         res = list(map(transform, self.model.select(condition="id=%s"%(id_purchase,))))
-        col = ('id', 'ID Tiket', 'Kuantitas', 'Total', 'Tanggal', 'Status')
-        all_info.append((col, res))
+        all_info.append(res[0])
         res = self.model.select(fields='tiket_id',
             condition="id=%s"%(id_purchase,))
         all_info.append(ticket_ctrl.lihat_detail_tiket(res[0][0]))

@@ -1,6 +1,7 @@
 import ttkbootstrap.constants as ttkc
 from ttkbootstrap.tableview import Tableview
-import customtkinter
+import customtkinter, os
+from PIL import Image
 
 from concert.controllers.purchases import purchases_ctrl
 from concert.helpers.session import Session
@@ -13,11 +14,30 @@ class PurchasePage(customtkinter.CTkFrame):
         self.controller = controller
         
     def update_view(self):
+        self.__container = customtkinter.CTkFrame(self, fg_color="transparent")
+        self.__container.pack(pady=40, padx=40, fill="both")
+        
         col, res = purchases_ctrl.lihat_semua_pembelian()
-        label = customtkinter.CTkLabel(self, text="Menu Transaksi", font=self.controller.title_font)
-        label.pack(side="top", fill="x", pady=10)
+        
+        label1 = customtkinter.CTkLabel(self.__container, text="Data Pembelian", font=('Plus Jakarta Sans', 40, "bold"))
+        label1.pack()
+        label2 = customtkinter.CTkLabel(self.__container, text="Silahkan lihat pembelian anda", font=('Plus Jakarta Sans', 24))
+        label2.pack(pady=10)
+        
+        back_image = customtkinter.CTkImage(
+            Image.open(os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), 'static/arrow-left-solid-svg.png')), 
+            size=(20, 20))
+        back_button = customtkinter.CTkButton(self.__container, text="Kembali",
+                            fg_color="transparent",
+                            hover_color="#FFFFFF",
+                            image=back_image,
+                            font=('Plus Jakarta Sans', 16, "bold"),
+                            text_color="#000000",
+                            command=lambda: self.controller.show_frame("AppPage", True))
+        back_button.place(x=0, y=12)
+        
         self.dt = Tableview(
-            master=self,
+            master=self.__container,
             coldata=col,
             rowdata=res,
             paginated=True,
@@ -25,22 +45,40 @@ class PurchasePage(customtkinter.CTkFrame):
             bootstyle=ttkc.PRIMARY,
         )
         self.dt.pack(fill=ttkc.BOTH, expand=ttkc.YES, padx=10, pady=10)
-        button1 = customtkinter.CTkButton(self, text="Detail Purchase",
-                           command=self._detail)
-        button2 = customtkinter.CTkButton(self, text="Refund",
-                           command=self._refund)
-        button3 = customtkinter.CTkButton(self, text="Kembali",
-                           command=lambda: self.controller.show_frame("AppPage", True))
-        button1.pack()
-        button2.pack()
-        button3.pack()
         
-    def _detail(self):
+        frame1 = customtkinter.CTkFrame(self.__container, fg_color="transparent")
+        frame1.pack(pady=12, anchor='center')
+        
+        button_image1 = customtkinter.CTkImage(
+            Image.open(os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), 'static/user-plus-solid-svg.png')), 
+            size=(25, 20))
+        button1 = customtkinter.CTkButton(frame1, text="Refund",
+                            fg_color="#FFD60A",
+                            hover_color="#e6bf00",
+                            text_color="#000000",
+                            image=button_image1,
+                            font=('Plus Jakarta Sans', 16, "bold"),
+                            command=self.__refund)
+        
+        button_image2 = customtkinter.CTkImage(
+            Image.open(os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), 'static/arrow-right-to-bracket-solid-svg.png')), 
+            size=(20, 20))
+        button2 = customtkinter.CTkButton(frame1, text="Detail pembelian",
+                            fg_color="#015395",
+                            hover_color="#013865",
+                            text_color="#FFFFFF",
+                            image=button_image2,
+                            font=('Plus Jakarta Sans', 16, "bold"),
+                            command=self.__detail)
+        button1.grid(row=0, column=0, ipady=6, ipadx=6, padx=8)
+        button2.grid(row=0, column=1, ipady=6, ipadx=6)
+        
+    def __detail(self):
         print(self.dt.get_rows(selected=True)[0].values)
         Session.USER_DATA['purchase_id'] = self.dt.get_rows(selected=True)[0].values[0]
         self.controller.show_frame("DetailPurchasePage", True)
     
-    def _refund(self):
+    def __refund(self):
         print(self.dt.get_rows(selected=True)[0].values)
         Session.USER_DATA['purchase_id'] = self.dt.get_rows(selected=True)[0].values[0]
         self.controller.show_frame("RefundPage")

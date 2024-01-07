@@ -33,7 +33,7 @@ class DetailConcertPage(customtkinter.CTkFrame):
                             image=back_image,
                             font=('Plus Jakarta Sans', 16, "bold"),
                             text_color="#000000",
-                            command=lambda: self.controller.show_frame("ConcertApp", True))
+                            command=lambda: self.controller.show_frame("ConcertPage", True))
         back_button.place(x=0, y=0)
         
         self.dt = CTkTable(
