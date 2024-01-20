@@ -1,9 +1,13 @@
+<img src="https://api-frontend.kemdikbud.go.id/v2/detail_pt_logo/ODcyMEY5MkMtREQyMi00RDU3LUI3MEItNTZDNzJFNUVGREMw" width="75"/>
+<h1 id="judul"><b>Aplikasi Pembelian Tiket Konser</b></h1> <h3>Tugas Final Mata Kuliah Pemrograman Berbasis Objek Praktik</h3>
 
-# Python OOP MVC
+![nama](https://img.shields.io/badge/Nama-Muhammad%20Ali%20Pratama%20Putra-blue)
+![nim](https://img.shields.io/badge/NIM-5220411416-lightgrey)
+![matkul](https://img.shields.io/badge/Mata%20Kuliah-Pemrograman%20Berbasis%20Objek%20Praktik-lightgrey)
+
+------------------------------------------------------------------------
 
 Projek menggunakan struktur MVC (Model-View-Controller) dan paradigma OOP (Object Oriented Programming) pada kasus "Aplikasi Pembelian Tiket Konser" dengan GUI Tkinter.
-
-
 
 ## Instalasi
 
